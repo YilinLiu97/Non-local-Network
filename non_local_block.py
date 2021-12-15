@@ -55,7 +55,7 @@ class Non_Local_Block(nn.Module):
     
     x_theta = self.W_theta(x).view(B,C,-1)
     x_phi = self.W_phi(x).view(B,C,-1)
-    if type == 'embeded_gaussian':
+    if type == 'embeded_gaussian':  # same as self-attention
       relations = F.softmax(torch.matmul(x_theta.permute(0,2,1), x_phi), -1) # THW x THW
     elif type == 'dot product':
       relations = torch.matmul(x_theta.permute(0,2,1), x_phi) # THW x THW
