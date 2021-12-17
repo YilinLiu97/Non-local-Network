@@ -44,22 +44,22 @@ class EncoderBlock(nn.Module):
 
         return x
 
-    class TransformerEncoder(nn.Module):
+ class TransformerEncoder(nn.Module):
 
-        def __init__(self, num_layers, **block_args):
-            super().__init__()
-            self.layers = nn.ModuleList([EncoderBlock(**block_args) for _ in range(num_layers)])
+    def __init__(self, num_layers, **block_args):
+        super().__init__()
+        self.layers = nn.ModuleList([EncoderBlock(**block_args) for _ in range(num_layers)])
 
-        def forward(self, x, mask=None):
-            for l in self.layers:
-                x = l(x, mask=mask)
-            return x
+    def forward(self, x, mask=None):
+        for l in self.layers:
+            x = l(x, mask=mask)
+        return x
 
-        def get_attention_maps(self, x, mask=None):
-            attn_maps = []
-            for l in self.layers:
-                _, attn_map = l.multi_head_attn(x, mask=mask, return_attention=True)
-                attn_maps.append(attn_map)
-                x = l(x)
-            return attn_maps
+    def get_attention_maps(self, x, mask=None):
+        attn_maps = []
+        for l in self.layers:
+            _, attn_map = l.multi_head_attn(x, mask=mask, return_attention=True)
+            attn_maps.append(attn_map)
+            x = l(x)
+        return attn_maps
 
